@@ -1,0 +1,36 @@
+// 92. Reverse Linked List 2
+
+// soruda bize verilen bağlı bir listenin belirli iki noktasında listeyi ters çevirmemizi istemiş
+// mantık basit, geçici bir düğüm oluşturup left ve right düğümlerini bulup aradaki elemanları yer değiştirecez 
+
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+
+        // adım 1 : ilk olarak listenin boş olup olmadığını veya left == right (ters çevrilemsine gerek yok) mi diye kontrol ediyoruz
+        if (head == null || left == right) {
+            return head;
+        }
+
+        // adım 2 : listede gezebilmek için dummy adında geçici bir düğüm oluşturuyoruz
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        // adım 3 : left düğümünü bulmak için döngüyle listeyi dolaşıyorum 
+        ListNode prev = dummy;
+        for (int i = 1; i < left; i++) {
+            prev = prev.next;
+        }
+
+        // adım 4 : son olarak döngü oluşturup left ve right düğümleri arasındaki düğümleri ters çeviriyoruz.
+        ListNode leftNode = prev.next;
+        ListNode tail = leftNode.next;
+
+        for (int i = 0; i < right - left; i++) {
+            leftNode.next = tail.next;
+            tail.next = prev.next;
+            prev.next = tail;
+            tail = leftNode.next;
+        }
+        return dummy.next;
+    }
+}
